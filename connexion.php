@@ -1,3 +1,5 @@
+<?php
+/**
 VinciPlanning (https://github.com/Kysic/vinciplanning/)
 
 Application web de gestion de planning destinée à l'association
@@ -17,4 +19,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+*/
+include('session.php');
+echo "<_sep_>";
+include('menuConnexion.php');
+?>

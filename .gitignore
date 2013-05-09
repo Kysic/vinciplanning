@@ -1,0 +1,8 @@
+.settings
+.project
+.buildpath
+copy.sh
+conf/config.php
+conf/config_prod.php
+lib_old
+
