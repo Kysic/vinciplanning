@@ -452,15 +452,19 @@ var calendar = (function() {
 		displayMonthGrid();
 		loadMonthMaraudes(getMonthId(monthDisplayed), false);
 		if (!pasDHistorique) {
-			window.history.pushState(monthDisplayed, 'Vinci Planning '
-					+ getMonthId(monthDisplayed), '?'
-					+ getMonthId(monthDisplayed));
+			if (window.history.pushState) {
+				window.history.pushState(monthDisplayed, 'Vinci Planning '
+						+ getMonthId(monthDisplayed), '?'
+						+ getMonthId(monthDisplayed));
+			}
 		}
 	}
 
-	window.addEventListener('popstate', function(event) {
-		displayMonth(event.state, true);
-	});
+	if (window.addEventListener) {
+		window.addEventListener('popstate', function(event) {
+			displayMonth(event.state, true);
+		});
+	}
 
 	function registerDateChangeController() {
 		$('.previousMonth').click(
