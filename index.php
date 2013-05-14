@@ -40,6 +40,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 					<?php include('menuConnexion.php'); ?>
 				</div>
 			</div>
+			<div id="navigation" class="menu">
+				<div class="barreTitre">Navigation</div>
+				<div id="contenuNavigation" class="contenuMenu">
+					<span class="fauxLien" onClick="menuNavigation.aide();">Aide</span>
+				</div>
+			</div>
 			<div id="tableauDeBord" class="menu">
 				<div class="barreTitre">Tableau de bord</div>
 				<div id="contenuTableauDeBord" class="contenuMenu">To be done.</div>

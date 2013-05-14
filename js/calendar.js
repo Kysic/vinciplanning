@@ -137,6 +137,39 @@ var modal = (function() {
 
 })();
 
+//Gere le menu de navigation
+var menuNavigation = (function() {
+
+	function aide() {
+		modal.show('<h3>Légende</h3>'+
+				'<h4>Maraude complete :</h4>'+
+				'<div class="day afterToday maraudeComplete"><div class="dayNumber">XX</div>'+
+				'<div class="tuteur">Tuteur</div>'+
+				'<div class="coequipier">Coéquipier 1</div>'+
+				'<div class="coequipier">Coéquipier 2</div>'+
+				'</div><br>'+
+				'<h4>Il manque un seul tuteur ou coéquipier :</h4>'+
+				'<div class="day afterToday maraudeNotComplete"><div class="dayNumber">XX</div>'+
+				'<div class="tuteur">Tuteur</div>'+
+				'</div>'+
+				'<div class="day afterToday maraudeNotComplete"><div class="dayNumber">XX</div>'+
+				'<div class="coequipier">Coéquipier 1</div>'+
+				'<div class="coequipier">Coéquipier 2</div>'+
+				'</div>'+
+				'<h4>Participation non validée :</h4>'+
+				'<div class="day afterToday"><div class="dayNumber">XX</div>'+
+				'<div class="nonTraite">Attente de validation</div>'+
+				'<div class="refuse">Participation refusée</div>'+
+				'</div>'
+				, 'Aide');
+	}
+	
+	return {
+		aide : aide
+	};
+	
+})();
+
 // Gere le formulaire de connexion
 var menuConnexion = (function() {
 

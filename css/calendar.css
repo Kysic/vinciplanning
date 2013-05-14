@@ -253,7 +253,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	float: left;
 }
 
-#menuConnexion,#tableauDeBord,#DerniersCRMaraudes {
+#menuConnexion,#navigation,#tableauDeBord,#DerniersCRMaraudes {
 	width: 190px;
 	margin-bottom: 20px;
 }
