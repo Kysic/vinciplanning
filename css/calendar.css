@@ -143,12 +143,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	background: linear-gradient(to top, #d9d9d9, #efefef);
 }
 
-.beforeToday.maraudeComplete {
+.beforeToday.roamingComplete {
 	background: #cec;
 	background: linear-gradient(to top, #a0d9a3, #dfffdf);
 }
 
-.beforeToday.maraudeNotComplete {
+.beforeToday.roamingNotComplete {
 	background: #ebb;
 	background: linear-gradient(to top, #dfa1a1, #ffdfdf);
 }
@@ -158,11 +158,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	background: linear-gradient(to top, #f1d0a9, #fff9bf);
 }
 
-.today.maraudeComplete {
+.today.roamingComplete {
 	background: #faf;
 }
 
-.today.maraudeNotComplete {
+.today.roamingNotComplete {
 	background: #faa;
 }
 
@@ -171,17 +171,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	background: linear-gradient(to top, #ebe2c2, #ffffe2);
 }
 
-.afterToday.maraudeComplete {
+.afterToday.roamingComplete {
 	background: #dfc;
 	background: linear-gradient(to top, #9e9, #cfc);
 }
 
-.afterToday.maraudeNotComplete {
+.afterToday.roamingNotComplete {
 	background: #fbc;
 	background: linear-gradient(to top, #e99, #fcc);
 }
 
-.tuteur {
+.tutor {
 	font-size: 0.9em;
 	color: #fff;
 	background: #55d;
@@ -190,7 +190,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	border-radius: 3px;
 }
 
-.coequipier {
+.teamMate {
 	font-size: 0.9em;
 	color: #fff;
 	background: #587;
@@ -199,11 +199,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	border-radius: 3px;
 }
 
-.annule {
+.cancelled {
 	display: none;
 }
 
-.refuse {
+.refused {
 	font-size: 0.9em;
 	color: #fff;
 	background: #444;
@@ -212,7 +212,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	border-radius: 3px;
 }
 
-.nonTraite {
+.notProcessed {
 	font-size: 0.9em;
 	color: #fff;
 	background: #d55;
@@ -238,22 +238,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	text-align: center;
 }
 
-.barreTitre {
+.titleBar {
 	border-bottom: 1px solid #555;
 	border-radius: 8px 8px 0px 0px;
 	background: #ddd;
 	background: linear-gradient(to top, #ccc, #eee);
 }
 
-.contenuMenu {
+.menuContent {
 	padding: 5px;
 }
 
-#menuLateral {
+#lateralMenu {
 	float: left;
 }
 
-#menuConnexion,#navigation,#tableauDeBord,#DerniersCRMaraudes {
+#connectionMenu,#browsingMenu,#dashboard,#lastRoamingsReports {
 	width: 190px;
 	margin-bottom: 20px;
 }
@@ -266,11 +266,11 @@ input[type=text],input[type=password] {
 	width: 80px;
 }
 
-.fauxLien {
+.actionLink {
 	cursor: pointer;
 }
 
-#fond {
+#overlay {
 	background-color: #000000;
 	position: fixed;
 	left: 0;
@@ -282,14 +282,14 @@ input[type=text],input[type=password] {
 	display: none;
 }
 
-#fenetreModale {
+#modalWindow {
 	position: absolute;
 	z-index: 100;
 	display: none;
 	background-color: #ffffff;
 }
 
-#fermerFenModale {
+#modalWindowClose {
 	float: right;
 	cursor: pointer;
 	border-left: 1px solid #555;
@@ -301,22 +301,22 @@ input[type=text],input[type=password] {
 	border-radius: 0px 8px 0px 0px;
 }
 
-#fenetreModale .contenuMenu {
+#modalWindowContent {
 	padding: 30px;
 }
 
-#fenetreModale table {
+#modalWindow table {
     margin-left:auto; 
     margin-right:auto;
 }
 
-#fenetreModale th {
+#modalWindow th {
 	padding: 8px;
 	background: #ddf;
 	background: linear-gradient(to top, #ccf, #eef);
 }
 
-#fenetreModale td {
+#modalWindow td {
 	padding: 5px;
 	background: #eee;
 	background: linear-gradient(to top, #e0e0ff, #efefff);

@@ -21,20 +21,21 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('lib/common.php');
-require_once('lib/maraude.php');
+require_once('lib/roaming.php');
 
-if ( @$_POST['action'] == 'demandeAParticiper' && !empty($_POST['dateMaraude']) ) {
-	if (!peutPartiperAuxMaraudes()) {
+if (!isTokenCorrect()) {
+	die('Erreur sur le jeton de session. Veuillez vous déconnecter/reconnecter.');
+}
+
+if ( @$_POST['action'] == 'applyForRoaming' && !empty($_POST['roamingDate']) ) {
+	if (!canApplyForRoamings()) {
 		die("Vous ne disposez pas des droits nécessaires.");
 	}
-	if (!estJetonCorrect()) {
-		die('Erreur sur le jeton de session. Veuillez vous déconnecter/reconnecter.');
-	}
-	$tabDate = split('-', $_POST['dateMaraude']);
+	$tabDate = split('-', $_POST['roamingDate']);
 	if (count($tabDate) != 3 || !checkdate($tabDate[1], $tabDate[2], $tabDate[0])) {
 		die('Date demandée invalide.');
 	}
-	$result = ajouterDemande($pdo, getUser()->membreId, $_POST['dateMaraude'], peutEtreTuteur() ? 'tuteur' : 'coequipier');
+	$result = addApplication($pdo, getUser()->memberId, $_POST['roamingDate'], canBeTutor() ? 'tutor' : 'teamMate');
 	if ($result == '00000') {
 		echo 'Demande de participation à la maraude du '.$tabDate[2].
 			'/'.$tabDate[1].'/'.$tabDate[0].' enregistrée.<br>'.
@@ -42,31 +43,28 @@ if ( @$_POST['action'] == 'demandeAParticiper' && !empty($_POST['dateMaraude']) 
 	} else {
 		echo 'Erreur lors de l\'accès à la base de donnée : '.$result;
 	}
-} else if ( (@$_POST['action'] == 'validerParticipation' || @$_POST['action'] == 'rejeterParticipation') && !empty($_POST['participationId']) ) {
-	if (!peutValiderParticipation()) {
+} else if ( (@$_POST['action'] == 'validateApplication' || @$_POST['action'] == 'rejectApplication') && !empty($_POST['participationId']) ) {
+	if (!canValidateApplication()) {
 		die("Vous ne disposez pas des droits nécessaires.");
 	}
-	if (!estJetonCorrect()) {
-		die('Erreur sur le jeton de session. Veuillez vous déconnecter/reconnecter.');
-	}
-	$result = modifierStatutDemande($pdo, $_POST['participationId'], @$_POST['action'] == 'validerParticipation' ? 'valide' : 'refuse');
+	$result = modifyApplication($pdo, $_POST['participationId'], @$_POST['action'] == 'validateApplication' ? 'validated' : 'refused');
 	if ($result == '00000') {
 		echo 'Modification enregistrée.<br>'.
 			'<input type="button" value="Fermer" onClick="calendar.refresh(); modal.close();">';
 	} else {
 		echo 'Erreur lors de l\'accès à la base de donnée : '.$result;
 	}
-} else if ( @$_POST['action'] == 'annulerDemande' && !empty($_POST['participationId']) ) {
-	 if (!peutPartiperAuxMaraudes()) {
+} else if ( @$_POST['action'] == 'cancelApplication' && !empty($_POST['participationId']) ) {
+	if (!canApplyForRoamings()) {
 		die("Vous ne disposez pas des droits nécessaires.");
-	 }
-	 $result = annulerDemande($pdo, getUser()->membreId, $_POST['participationId']);
-	 if ($result == '00000') {
-	 	echo 'Modification enregistrée.<br>'.
-	 			'<input type="button" value="Fermer" onClick="calendar.refresh(); modal.close();">';
-	 } else {
-	 	echo 'Erreur lors de l\'accès à la base de donnée : '.$result;
-	 }
+	}
+	$result = cancelApplication($pdo, getUser()->memberId, $_POST['participationId']);
+	if ($result == '00000') {
+		echo 'Modification enregistrée.<br>'.
+				'<input type="button" value="Fermer" onClick="calendar.refresh(); modal.close();">';
+	} else {
+		echo 'Erreur lors de l\'accès à la base de donnée : '.$result;
+	}
 }else {
 	echo 'Action demandée invalide.';
 }

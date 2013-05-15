@@ -22,25 +22,25 @@
  */
 
 require_once('lib/common.php');
-require_once('lib/formulaire.php');
+require_once('lib/form.php');
 
-if (estConnecte()) {
+if (isConnected()) {
 	die("Vous ne pouvez pas vous inscrire si vous êtes déjà connecter.");
 }
 
 $formParams = array(
 		'pseudo' => new GenericFormEntry('Login', 'text', '2 à 30 caractères autorisés : "-", "_" et alphanumériques',
 				true, 2, 30, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-_[:alnum:]]{2,30}$/'))),
-		'nom' => new GenericFormEntry('Nom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
+		'name' => new GenericFormEntry('Nom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
 				true, 2, 50, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-[:alpha:]âêîôûàèìòùáéíóúäëïöüãõñç]{2,50}$/'))),
-		'prenom' => new GenericFormEntry('Prenom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
+		'firstName' => new GenericFormEntry('Prenom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
 				true, 2, 50, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-[:alpha:]âêîôûàèìòùáéíóúäëïöüãõñç]{2,50}$/'))),
 		'email' => new GenericFormEntry('Email', 'email', 'Format invalide', true, 0, 50, FILTER_VALIDATE_EMAIL),
 		'telephone' => new GenericFormEntry('Téléphone', 'tel', 'Format invalide', false, -1, 20,
 				FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^\+?[0-9]{0,20}$/'))),
-		'mdp' => new GenericFormEntry('Mot-de-passe', 'password', 'Utilisation de caractères non autorisés', true, 6, MAX_PASSWORD_LENGTH,
+		'password' => new GenericFormEntry('Mot-de-passe', 'password', 'Utilisation de caractères non autorisés', true, 6, MAX_PASSWORD_LENGTH,
 				FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[[:print:]]{6,'.MAX_PASSWORD_LENGTH.'}$/'))),
-		'verifMdp' => new FormVerificationEntry('Vérification du mot-de-passe', 'password', 'Ce champ doit être identique au champ mot-de-passe', true, 6, MAX_PASSWORD_LENGTH, @$_POST['mdp'])
+		'passwordVerification' => new FormVerificationEntry('Vérification du mot-de-passe', 'password', 'Ce champ doit être identique au champ mot-de-passe', true, 6, MAX_PASSWORD_LENGTH, @$_POST['password'])
 );
 
 
@@ -74,8 +74,8 @@ foreach ($formParams as $param => $formEntry) {
 	}
 }
 if ($isAllValid) {
-	require_once('lib/membre.php');
-	$result = ajoutMembre($pdo, $_POST['pseudo'], $_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['telephone'], $_POST['mdp']);
+	require_once('lib/member.php');
+	$result = addMember($pdo, $_POST['pseudo'], $_POST['name'], $_POST['firstName'], $_POST['email'], $_POST['telephone'], $_POST['password']);
 	if ($result == '00000') {
 ?>
 Inscription réussie.<br>

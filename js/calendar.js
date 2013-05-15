@@ -20,46 +20,46 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Gere la fenetre modale
+// Gère la fenêtre modale
 var modal = (function() {
 
 	function moveTo(fmTop, fmLeft) {
-		$('#fenetreModale').css({
+		$('#modalWindow').css({
 			'top' : fmTop > 0 ? fmTop : 0,
 			'left' : fmLeft > 0 ? fmLeft : 0
 		});
 	}
 
 	function centerInWindow() {
-		var fmTop = $(window).height() / 2.5 - $('#fenetreModale').height() / 2;
-		var fmLeft = $(window).width() / 2 - $('#fenetreModale').width() / 2;
+		var fmTop = $(window).height() / 2.5 - $('#modalWindow').height() / 2;
+		var fmLeft = $(window).width() / 2 - $('#modalWindow').width() / 2;
 		moveTo(fmTop, fmLeft);
 	}
 	
 	function show(contenuHtml, titreHtml, noCloseButton) {
-		$('#fond').show();
-		$('#titreFenModale').html(titreHtml ? titreHtml : '&nbsp;');
-		$('#contenuFenModale').html(contenuHtml);
+		$('#overlay').show();
+		$('#modalWindowTitle').html(titreHtml ? titreHtml : '&nbsp;');
+		$('#modalWindowContent').html(contenuHtml);
 		if (noCloseButton) {
-			$('#fermerFenModale').hide();
+			$('#modalWindowClose').hide();
 		} else {
-			$('#fermerFenModale').show();
-			$('#fermerFenModale').click(function() {
+			$('#modalWindowClose').show();
+			$('#modalWindowClose').click(function() {
 				close();
 			});
 		}
 		centerInWindow();
-		$('#fenetreModale').show();
+		$('#modalWindow').show();
 		centerInWindow();
 	}
 
-	function showMsgChargementEnCours() {
+	function showLoadingMsg() {
 		show("Chargement en cours, veuillez patienter.",
 				"Chargement en cours...", true);
 	}
 
 	function open(url) {
-		showMsgChargementEnCours();
+		showLoadingMsg();
 		$.ajax({
 			url : url,
 			dataType : 'html',
@@ -67,18 +67,18 @@ var modal = (function() {
 				show(data);
 			},
 			error : function(qXHR, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			}
 		});
 	}
 
 	function close() {
-		$("#fond").hide();
-		$("#fenetreModale").hide();
+		$("#overlay").hide();
+		$("#modalWindow").hide();
 	}
 	
 	function postData(url, data) {
-		showMsgChargementEnCours();
+		showLoadingMsg();
 		$.ajax({
 			type : 'POST',
 			data : data,
@@ -88,7 +88,7 @@ var modal = (function() {
 				show(data);
 			},
 			error : function(qXHR, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			}
 		});
 	}
@@ -98,8 +98,8 @@ var modal = (function() {
 		return false;
 	}
 
-	$(document).on('erreur', function(event, erreurTitre, erreurDescr) {
-		show(erreurDescr, erreurTitre);
+	$(document).on('error', function(event, errorTitle, errorMsg) {
+		show(errorMsg, errorTitle);
 	});
 
 	// Permet de deplacer la fenetre modale en cliquant sur le titre
@@ -116,12 +116,12 @@ var modal = (function() {
 		$(window).off('mouseup', mouseUpHandler);
 	};
 
-	$('#fenetreModale').ready(function() {
-		$('#fenetreModale .barreTitre').mousedown(function(event) {
+	$('#modalWindow').ready(function() {
+		$('#modalWindow .titleBar').mousedown(function(event) {
 			initalPageX = event.pageX;
 			initalPageY = event.pageY;
-			intialFenTop = parseInt($('#fenetreModale').css('top'));
-			intialFenLeft = parseInt($('#fenetreModale').css('left'));
+			intialFenTop = parseInt($('#modalWindow').css('top'));
+			intialFenLeft = parseInt($('#modalWindow').css('left'));
 			$(window).on('mousemove', mouseMoveHandler);
 			$(window).on('mouseup', mouseUpHandler);
 		});
@@ -138,40 +138,40 @@ var modal = (function() {
 })();
 
 //Gere le menu de navigation
-var menuNavigation = (function() {
+var browsingMenu = (function() {
 
-	function aide() {
+	function legend() {
 		modal.show('<h3>Légende</h3>'+
 				'<h4>Maraude complete :</h4>'+
-				'<div class="day afterToday maraudeComplete"><div class="dayNumber">XX</div>'+
-				'<div class="tuteur">Tuteur</div>'+
-				'<div class="coequipier">Coéquipier 1</div>'+
-				'<div class="coequipier">Coéquipier 2</div>'+
+				'<div class="day afterToday roamingComplete"><div class="dayNumber">XX</div>'+
+				'<div class="tutor">Tuteur</div>'+
+				'<div class="teamMate">Coéquipier 1</div>'+
+				'<div class="teamMate">Coéquipier 2</div>'+
 				'</div><br>'+
 				'<h4>Il manque un seul tuteur ou coéquipier :</h4>'+
-				'<div class="day afterToday maraudeNotComplete"><div class="dayNumber">XX</div>'+
-				'<div class="tuteur">Tuteur</div>'+
+				'<div class="day afterToday roamingNotComplete"><div class="dayNumber">XX</div>'+
+				'<div class="tutor">Tuteur</div>'+
 				'</div>'+
-				'<div class="day afterToday maraudeNotComplete"><div class="dayNumber">XX</div>'+
-				'<div class="coequipier">Coéquipier 1</div>'+
-				'<div class="coequipier">Coéquipier 2</div>'+
+				'<div class="day afterToday roamingNotComplete"><div class="dayNumber">XX</div>'+
+				'<div class="teamMate">Coéquipier 1</div>'+
+				'<div class="teamMate">Coéquipier 2</div>'+
 				'</div>'+
 				'<h4>Participation non validée :</h4>'+
 				'<div class="day afterToday"><div class="dayNumber">XX</div>'+
-				'<div class="nonTraite">Attente de validation</div>'+
-				'<div class="refuse">Participation refusée</div>'+
+				'<div class="notProcessed">Attente de validation</div>'+
+				'<div class="refused">Participation refusée</div>'+
 				'</div>'
 				, 'Aide');
 	}
 	
 	return {
-		aide : aide
+		help : legend
 	};
 	
 })();
 
 // Gere le formulaire de connexion
-var menuConnexion = (function() {
+var connectionMenu = (function() {
 
 	var timerKeepAlive = setInterval(function() {
 		keepSessionOpen()
@@ -192,16 +192,16 @@ var menuConnexion = (function() {
 		return true;
 	}
 
-	function refreshMenuConnexion() {
-		$('#contenuMenuConnexion').html("Chargement en cours...");
+	function refreshConnectionMenu() {
+		$('#connectionMenuContent').html("Chargement en cours...");
 		$.ajax({
-			url : 'menuConnexion.php',
+			url : 'connectionMenu.php',
 			dataType : 'html',
 			success : function(data) {
-				$('#contenuMenuConnexion').html(data);
+				$('#connectionMenuContent').html(data);
 			},
 			error : function(qXHR, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			}
 		});
 	}
@@ -214,33 +214,33 @@ var menuConnexion = (function() {
 				if (!compareArray(user, data)) {
 					user = data;
 					refreshMenuConnexion();
-					$(document).trigger('changementEtatSession', [ user ]);
+					$(document).trigger('sessionStateChange', [ user ]);
 				}
 			},
 			error : function(qXHR, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			}
 		});
 	}
 
 	function submit() {
-		action = $('#formConnexion input[name="action"]').val();
+		action = $('#connectionForm input[name="action"]').val();
 		$.ajax({
 			type : 'POST',
-			data : $('#formConnexion').serialize(),
-			url : 'connexion.php',
+			data : $('#connectionForm').serialize(),
+			url : 'connection.php',
 			dataType : 'text',
 			success : function(data) {
 				var tabParam = data.split('<_sep_>');
 				user = $.parseJSON(tabParam[0]);
-				$('#contenuMenuConnexion').html(tabParam[1]);
-				$(document).trigger('changementEtatSession', [ user ]);
+				$('#connectionMenuContent').html(tabParam[1]);
+				$(document).trigger('sessionStateChange', [ user ]);
 			},
 			error : function(qXHR, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			}
 		});
-		$('#contenuMenuConnexion').html("Chargement en cours...");
+		$('#connectionMenuContent').html("Chargement en cours...");
 		return false;
 	}
 
@@ -267,16 +267,16 @@ var calendar = (function() {
 	var monthFirstDayCell;
 	var nextMonthFirstDayCell;
 
-	var maraudes = {};
+	var roamings = {};
 	
-	function getMaraude(dateMaraude) {
-		var monthMaraudes = maraudes[getMonthId(monthDisplayed)];
-		var dayId = getDayId(dateMaraude);
-		if (monthMaraudes) {
-			for ( var maraudeKey in monthMaraudes) {
-				var maraude = monthMaraudes[maraudeKey];
-				if (maraude.dateMaraude == dayId) {
-					return maraude;
+	function getRoaming(roamingDate) {
+		var monthRoamings = roamings[getMonthId(monthDisplayed)];
+		var dayId = getDayId(roamingDate);
+		if (monthRoamings) {
+			for ( var roamingKey in monthRoamings) {
+				var roaming = monthRoamings[roamingKey];
+				if (roaming.roamingDate == dayId) {
+					return roaming;
 				}
 			}
 		}
@@ -292,40 +292,56 @@ var calendar = (function() {
 		return midnight;
 	}
 	
-	function menuMaraude(dateMaraude) {
-		var maraude = getMaraude(dateMaraude);
-		var html = '<h3>Maraude du ' + config.dayNames[(dateMaraude.getDay() + 6) % 7].toLowerCase()
-					+ ' ' + dateMaraude.getDate() + ' ' + config.monthNames[monthDisplayed.getMonth()].toLowerCase() 
-					+ ' ' + dateMaraude.getFullYear() + '</h3>';
-		var idMyParticipation = -1;
-		var participationMembreValide = false;
-		if (maraude && maraude.participants.length >= 1) {
+	function roamingMenu(roamingDate) {
+		var roaming = getRoaming(roamingDate);
+		var html = '<h3>Roaming du ' + config.dayNames[(roamingDate.getDay() + 6) % 7].toLowerCase()
+					+ ' ' + roamingDate.getDate() + ' ' + config.monthNames[monthDisplayed.getMonth()].toLowerCase() 
+					+ ' ' + roamingDate.getFullYear() + '</h3>';
+		var myParticipationId = -1;
+		var memberApplicationValidated = false;
+		if (roaming && roaming.participants.length >= 1) {
 			html += '<table><thead><tr><th>Membre</th><th>Type</th><th>Statut Demande</th>';
-			if (user.peutValiderParticipation) {
+			if (user.canValidateApplication) {
 				html += '<th>Actions</th>';
 			}
 			html += '</tr></thead><tbody>';
-			for ( var idParticipants in maraude.participants) {
-				var participant = maraude.participants[idParticipants];
-				if (participant.membreId == user.membreId && participant.statutDemande != "annule") {
-					idMyParticipation = participant.participationId;
-					if (participant.statutDemande == 'valide') {
-						participationMembreValide = true;
+			for ( var idParticipants in roaming.participants) {
+				var participant = roaming.participants[idParticipants];
+				if (participant.memberId == user.memberId && participant.applicationStatus != "cancelled") {
+					myParticipationId = participant.participationId;
+					if (participant.applicationStatus == 'validated') {
+						memberApplicationValidated = true;
 					}
 				}
 				html += '<tr><td>' + participant.pseudo;
-				html += '</td><td>' + participant.typeParticipation;
-				html += '</td><td>' + participant.statutDemande;
-				if (user.peutValiderParticipation) {
+				html += '</td><td>' + (participant.participationType == 'tutor' ? 'tuteur' : 'coéquipier');
+				html += '</td><td>';
+				switch (participant.applicationStatus) {
+				case "cancelled":
+					html += 'annulée';
+					break;
+				case "notProcessed":
+					html += 'non traitée';
+					break;
+				case "validated":
+					html += 'validée';
+					break;
+				case "refused":
+					html += 'refusée';
+					break;
+				default:
+					html += 'erreur';;
+				}
+				if (user.canValidateApplication) {
 					html += '</td><td>';
-					if (participant.statutDemande == 'nonTraite' || participant.statutDemande == 'refuse') {
-						html += ' <input type="button" value="Valider" onClick="modal.postData(\'participation.php\','+
-							' \'action=validerParticipation&jeton=\'+user.jeton+\'&participationId='+
+					if (participant.applicationStatus == 'notProcessed' || participant.applicationStatus == 'refused') {
+						html += ' <input type="button" value="Valider" onClick="modal.postData(\'roamingApplication.php\','+
+							' \'action=validateApplication&token=\'+user.token+\'&participationId='+
 							participant.participationId+'\');">';
 					}
-					if (participant.statutDemande == 'nonTraite' || participant.statutDemande == 'valide') {
-						html += ' <input type="button" value="Rejeter" onClick="modal.postData(\'participation.php\','+
-							' \'action=rejeterParticipation&jeton=\'+user.jeton+\'&participationId='+
+					if (participant.applicationStatus == 'notProcessed' || participant.applicationStatus == 'validated') {
+						html += ' <input type="button" value="Rejeter" onClick="modal.postData(\'roamingApplication.php\','+
+							' \'action=rejectApplication&token=\'+user.token+\'&participationId='+
 							participant.participationId+'\');">';
 					}
 				}
@@ -334,23 +350,23 @@ var calendar = (function() {
 		}
 		html += '</tbody></table>';
 		
-		if (dateMaraude.getTime() < getTodayMidnight().getTime()) {
-			if (maraude && (user.peutValiderParticipation || (participationMembreValide && user.peutEnvoyerCR) )) {
-				html += '<br><input type="button" value="Ajouter CR Maraude" onClick="alert(\'Not implemented yet.\');">';
+		if (roamingDate.getTime() < getTodayMidnight().getTime()) {
+			if (roaming && (user.canValidateApplication || (memberApplicationValidated && user.canSeeReports) )) {
+				html += '<br><input type="button" value="Ajouter CR Roaming" onClick="alert(\'Not implemented yet.\');">';
 			}
-		} else if(user.peutPartiperAuxMaraudes) {
-			if (idMyParticipation > 0) {
-				html += '<br><input value="Annuler ma demande en cours" type="button" onClick="modal.postData(\'participation.php\','+
-				' \'action=annulerDemande&jeton=\'+user.jeton+\'&participationId='+
-				idMyParticipation+'\');">';
-			} else if (!isMaraudeComplete(maraude)) {
+		} else if(user.canApplyForRoamings) {
+			if (myParticipationId > 0) {
+				html += '<br><input value="Annuler ma demande en cours" type="button" onClick="modal.postData(\'roamingApplication.php\','+
+				' \'action=cancelApplication&token=\'+user.token+\'&participationId='+
+				myParticipationId+'\');">';
+			} else if (!isRoamingComplete(roaming)) {
 				html += '<input type="button" value="Demander à participer"'+
-					' onClick="modal.postData(\'participation.php\','+
-					' \'action=demandeAParticiper&jeton=\'+user.jeton+\'&dateMaraude='+
-					getDayId(dateMaraude)+'\');">';
+					' onClick="modal.postData(\'roamingApplication.php\','+
+					' \'action=applyForRoaming&token=\'+user.token+\'&roamingDate='+
+					getDayId(roamingDate)+'\');">';
 				}
 		}
-		if (user.peutValiderParticipation) {
+		if (user.canValidateApplication) {
 			html += '<br><input value="Ajouter participation au nom d\'un autre" type="button" onClick="alert(\'Not implemented yet.\');">';
 		}
 		modal.show(html);
@@ -385,7 +401,7 @@ var calendar = (function() {
 		for ( var i = 0; i < gridDays.size(); i++) {
 			gridDays.eq(i).click((function(cell) {
 				return function() {
-					menuMaraude(getDate(cell));
+					roamingMenu(getDate(cell));
 				}
 			})(i))
 		}
@@ -444,14 +460,14 @@ var calendar = (function() {
 		return getMonthId(date) + '-' + (date.getDate() < 10 ? '0' : '') + date.getDate();
 	}
 
-	function displayMonth(date, pasDHistorique) {
+	function displayMonth(date, noHistory) {
 		monthDisplayed = new Date(date.getFullYear(), date.getMonth(), 1);
 		monthFirstDayCell = (monthDisplayed.getDay() + 6) % 7;
 		nextMonthFirstDayCell = monthFirstDayCell
 				+ numberOfDaysInMonth(monthDisplayed);
 		displayMonthGrid();
-		loadMonthMaraudes(getMonthId(monthDisplayed), false);
-		if (!pasDHistorique) {
+		loadMonthRoamings(getMonthId(monthDisplayed), false);
+		if (!noHistory) {
 			if (window.history.pushState) {
 				window.history.pushState(monthDisplayed, 'Vinci Planning '
 						+ getMonthId(monthDisplayed), '?'
@@ -502,86 +518,86 @@ var calendar = (function() {
 		});
 	}
 	
-	function getNbValid(maraude) {
-		if (!maraude) {
+	function getNbValid(roaming) {
+		if (!roaming) {
 			return 0;
 		}
 		var compteur = 0;
-		for ( var key in maraude.participants) {
-			if (maraude.participants[key].statutDemande == 'valide') {
+		for ( var key in roaming.participants) {
+			if (roaming.participants[key].applicationStatus == 'validated') {
 				++compteur;
 			}
 		}
 		return compteur;
 	}
 
-	function isMaraudeComplete(maraude) {
-		return getNbValid(maraude) >= 3;
+	function isRoamingComplete(roaming) {
+		return getNbValid(roaming) >= 3;
 	}
-	function hasTuteur(maraude) {
-		for ( var key in maraude.participants) {
-			if (maraude.participants[key].typeParticipation == 'tuteur' && maraude.participants[key].statutDemande == 'valide') {
+	function hasTutor(roaming) {
+		for ( var key in roaming.participants) {
+			if (roaming.participants[key].participationType == 'tutor' && roaming.participants[key].applicationStatus == 'validated') {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	function displayMonthMaraudes() {
-		var monthMaraudes = maraudes[getMonthId(monthDisplayed)];
-		if (monthMaraudes) {
-			for ( var maraudeKey in monthMaraudes) {
-				var maraude = monthMaraudes[maraudeKey];
-				var jour = parseInt(maraude.dateMaraude.split('-')[2], 10);
+	function displayMonthRoamings() {
+		var monthRoamings = roamings[getMonthId(monthDisplayed)];
+		if (monthRoamings) {
+			for ( var roamingKey in monthRoamings) {
+				var roaming = monthRoamings[roamingKey];
+				var jour = parseInt(roaming.roamingDate.split('-')[2], 10);
 				var cellDiv = gridDays.eq(monthFirstDayCell + jour - 1);
-				if (isMaraudeComplete(maraude)) {
-					cellDiv.addClass('maraudeComplete');
-				} else if (getNbValid(maraude) == 1 || (getNbValid(maraude) >= 1 && !hasTuteur(maraude))) {
-					cellDiv.addClass('maraudeNotComplete');
+				if (isRoamingComplete(roaming)) {
+					cellDiv.addClass('roamingComplete');
+				} else if (getNbValid(roaming) == 1 || (getNbValid(roaming) >= 1 && !hasTutor(roaming))) {
+					cellDiv.addClass('roamingNotComplete');
 				}
-				for ( var idParticipants in maraude.participants) {
-					var participant = maraude.participants[idParticipants];
+				for ( var idParticipants in roaming.participants) {
+					var participant = roaming.participants[idParticipants];
 					cellDiv.append('<div class="'
-							+ participant.typeParticipation + ' '
-							+ participant.statutDemande + '">'
+							+ participant.participationType + ' '
+							+ participant.applicationStatus + '">'
 							+ participant.pseudo + '</div>');
 				}
 			}
 		}
 	}
 
-	function loadMonthMaraudes(monthId, force) {
-		if (force || !maraudes[monthId]) {
+	function loadMonthRoamings(monthId, force) {
+		if (force || !roamings[monthId]) {
 			$('#calendarRefreshIcon').hide();
 			$('#calendarLoadingIcon').show();
-			$.getJSON('maraudes.php', {
+			$.getJSON('roamings.php', {
 				month : monthId
 			}).done(function(data) {
 				if (force) {
 					displayMonthGrid();
 				}
-				receiveMonthMaraudes(monthId, data);
+				receiveMonthRoamings(monthId, data);
 				$('#calendarLoadingIcon').hide();
 				$('#calendarRefreshIcon').show();
 			}).fail(function(jqxhr, textStatus, error) {
-				$(document).trigger('erreur', [ textStatus, error ]);
+				$(document).trigger('error', [ textStatus, error ]);
 			});
 		} else {
-			displayMonthMaraudes();
+			displayMonthRoamings();
 		}
 	}
 
-	function receiveMonthMaraudes(monthId, data) {
-		maraudes[monthId] = data;
+	function receiveMonthRoamings(monthId, data) {
+		roamings[monthId] = data;
 		if (monthId == getMonthId(monthDisplayed)) {
-			displayMonthMaraudes();
+			displayMonthRoamings();
 		}
 	}
 	
-	function refreshMaraudes() {
+	function refreshRoamings() {
 		var monthId = getMonthId(monthDisplayed);
-		maraudes = new Array(maraudes[monthId]);
-		loadMonthMaraudes(monthId, true);
+		roamings = new Array(roamings[monthId]);
+		loadMonthRoamings(monthId, true);
 	}
 
 	$('#calendar').ready(function() {
@@ -597,12 +613,12 @@ var calendar = (function() {
 		displayMonth(monthDate);
 	});
 
-	$(document).on('changementEtatSession', function(event, user) {
-		refreshMaraudes();
+	$(document).on('sessionStateChange', function(event, user) {
+		refreshRoamings();
 	});
 
 	return {
-		refresh : refreshMaraudes
+		refresh : refreshRoamings
 	};
 
 })();

@@ -21,22 +21,21 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('lib/common.php');
-require_once('lib/membre.php');
+require_once('lib/roaming.php');
 
-if (!peutGererMembres()) {
-	die("Vous ne disposez pas des droits nécessaires.");
+if ( canAccessRoamings() && isset($_GET['month']) ) {
+    try {
+        $roamings = getRoamings($pdo, $_GET['month']);
+        if (canSeeOtherMembers()) {
+        	getRoamingParticipants($pdo, $roamings, !canValidateApplication());
+        }
+    }  
+    catch(PDOException $e) {  
+        die($e->getMessage());  
+    }
+    echo json_encode($roamings);
+} else {
+	echo "[]";
 }
+
 ?>
-<table>
-<thead>
-<tr><th>Groupe</th><th>Droits</th></tr>
-</thead>
-<tbody>
-<?php
-$listeGroupes = listeGroupes($pdo);
-foreach ($listeGroupes  as $groupe ) {
-	echo "<tr><td>".$groupe['groupe']."</td><td>".$groupe['droits']."</td></tr>";
-}
-?>
-</tbody>
-</table>

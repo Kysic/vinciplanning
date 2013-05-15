@@ -22,38 +22,38 @@
  */
 require_once('lib/common.php');
 ?>
-<form method="post" id="formConnexion" onSubmit="return menuConnexion.submit();" >
+<form method="post" id="connectionForm" onSubmit="return connectionMenu.submit();" >
 <?php
-if ( estConnecte() ) {
-	echo '<em>'.getUser()->pseudo.' ('.getUser()->groupe.')</em><br>';
+if ( isConnected() ) {
+	echo '<em>'.getUser()->pseudo.' ('.getUser()->groupName.')</em><br>';
 	?>
-	<span class="fauxLien" onClick="modal.open('gestionProfil.php');">Gestion profil</span><br>
+	<span class="actionLink" onClick="modal.open('profileManagement.php');">Gestion profil</span><br>
 	<?php 
-	if (peutGererMembres()) {
+	if (canManageMembers()) {
 ?>
 <!-- 
-	<span class="fauxLien" onClick="modal.open('gestionGroupes.php');">Gestion Groupes</span><br>
+	<span class="actionLink" onClick="modal.open('groupsManagement.php');">Gestion Groupes</span><br>
 -->
-	<span class="fauxLien" onClick="modal.open('gestionMembres.php');">Gestion Membres</span><br>
+	<span class="actionLink" onClick="modal.open('membersManagement.php');">Gestion Membres</span><br>
 <?php
 	}
 	?>
-	<input type="hidden" name="action" value="deconnecte">
-	<input type="hidden" name="jeton" value="<?php echo getJeton(); ?>">
+	<input type="hidden" name="action" value="disconnect">
+	<input type="hidden" name="token" value="<?php echo getToken(); ?>">
 	<input type="submit" value="deconnexion">
 	<?php
 } else {
-	if (isset($connexionErreur)) {
-		echo '<div id="connexionErreur">'.$connexionErreur.'</div>';
+	if (isset($connectionError)) {
+		echo '<div id="connectionError">'.$connectionError.'</div>';
 	}
 	?>
-	<input type="hidden" name="action" value="connecte">
+	<input type="hidden" name="action" value="connect">
 	<label for="pseudo">Login : </label>
 	<input type="text" name="pseudo" id="pseudo"><br>
-	<label for="motDePasse">Mot-de-passe : </label>
-	<input type="password" name="motDePasse" id="motDePasse"><br>
+	<label for="passwordInput">Mot-de-passe : </label>
+	<input type="password" name="password" id="password"><br>
 	<input type="submit" value="connexion"><br>
-	<span class="fauxLien" onClick="modal.open('inscription.php');">S'inscrire</span><br>
+	<span class="actionLink" onClick="modal.open('inscription.php');">S'inscrire</span><br>
 	<?php
 }
 ?>

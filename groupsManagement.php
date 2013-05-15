@@ -21,21 +21,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('lib/common.php');
-require_once('lib/maraude.php');
+require_once('lib/member.php');
 
-if ( peutAccederMaraudes() && isset($_GET['month']) ) {
-    try {
-        $maraudes = getMaraudes($pdo, $_GET['month']);
-        if (peutVoirAutresMembres()) { 
-        	getMembresDansMaraudes($pdo, $maraudes, !peutValiderParticipation());
-        }
-    }  
-    catch(PDOException $e) {  
-        die($e->getMessage());  
-    }
-    echo json_encode($maraudes);
-} else {
-	echo "[]";
+if (!canManageMembers()) {
+	die("Vous ne disposez pas des droits nécessaires.");
 }
-
 ?>
+<table>
+<thead>
+<tr><th>Groupe</th><th>Droits</th></tr>
+</thead>
+<tbody>
+<?php
+$groups = getGroups($pdo);
+foreach ($groups  as $group ) {
+	echo "<tr><td>".$group['groupName']."</td><td>".$group['rigths']."</td></tr>";
+}
+?>
+</tbody>
+</table>

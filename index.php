@@ -33,36 +33,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </head>
 <body>
 	<div id="pageContent">
-		<div id="menuLateral">
-			<div id="menuConnexion" class="menu">
-				<div class="barreTitre">Menu Connexion</div>
-				<div id="contenuMenuConnexion" class="contenuMenu">
-					<?php include('menuConnexion.php'); ?>
+		<div id="lateralMenu">
+			<div id="connectionMenu" class="menu">
+				<div class="titleBar">Menu Connexion</div>
+				<div id="connectionMenuContent" class="menuContent">
+					<?php include('connectionMenu.php'); ?>
 				</div>
 			</div>
-			<div id="navigation" class="menu">
-				<div class="barreTitre">Navigation</div>
-				<div id="contenuNavigation" class="contenuMenu">
-					<span class="fauxLien" onClick="menuNavigation.aide();">Aide</span>
+			<div id="browsingMenu" class="menu">
+				<div class="titleBar">Navigation</div>
+				<div id="contenuNavigation" class="menuContent">
+					<span class="actionLink" onClick="browsingMenu.help();">Aide</span>
 				</div>
 			</div>
-			<div id="tableauDeBord" class="menu">
-				<div class="barreTitre">Tableau de bord</div>
-				<div id="contenuTableauDeBord" class="contenuMenu">To be done.</div>
+			<div id="dashboard" class="menu">
+				<div class="titleBar">Tableau de bord</div>
+				<div id="dashboardContent" class="menuContent">To be done.</div>
 			</div>
-			<div id="DerniersCRMaraudes" class="menu">
-				<div class="barreTitre">Dernières maraudes</div>
-				<div id="contenuDerniersCRMaraudes" class="contenuMenu">To be done.</div>
+			<div id="lastRoamingsReports" class="menu">
+				<div class="titleBar">Dernières maraudes</div>
+				<div id="lastRoamingsReportsContent" class="menuContent">To be done.</div>
 			</div>
 		</div>
 		<div id="calendar"></div>
 	</div>
-	<div id="fond"></div>
-	<div id="fenetreModale" class="menu">
-		<div class="barreTitre">
-			<span id="titreFenModale"></span><span id="fermerFenModale">X</span>
+	<div id="overlay"></div>
+	<div id="modalWindow" class="menu">
+		<div class="titleBar">
+			<span id="modalWindowTitle"></span><span id="modalWindowClose">X</span>
 		</div>
-		<div id="contenuFenModale" class="contenuMenu"></div>
+		<div id="modalWindowContent" class="menuContent"></div>
 	</div>
 </body>
 </html>

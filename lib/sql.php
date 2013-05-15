@@ -22,6 +22,11 @@
  */
 require_once('conf/config.php');
 
+define('MEMBERS_TABLE', 'members');
+define('ROAMINGS_TABLE', 'roamings');
+define('GROUPS_TABLE', 'groups');
+define('APPLICATIONS_TABLE', 'applications');
+
 try {
     $dsn = SQL_TYPE.':host='.SQL_SERVER.';dbname='.SQL_DATABASE;
     $pdo = new PDO($dsn, SQL_USER, SQL_PASSWORD);  

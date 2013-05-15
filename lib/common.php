@@ -24,7 +24,7 @@ define('MAX_PASSWORD_LENGTH', '50');
 
 session_start();
 
-function estConnecte() {
+function isConnected() {
     return isset($_SESSION['USER']);
 }
 
@@ -32,91 +32,91 @@ function getUser() {
     return @$_SESSION['USER'];
 }
 
-function genererJeton() {
-	$_SESSION['JETON_POST'] = bin2hex(openssl_random_pseudo_bytes(32));
-	return $_SESSION['JETON_POST'];
+function generateToken() {
+	$_SESSION['POST_TOKEN'] = bin2hex(openssl_random_pseudo_bytes(32));
+	return $_SESSION['POST_TOKEN'];
 }
 
-function getJeton() {
-	if ( !isset($_SESSION['JETON_POST']) ) {
-		return genererJeton();
+function getToken() {
+	if ( !isset($_SESSION['POST_TOKEN']) ) {
+		return generateToken();
 	}
-	return $_SESSION['JETON_POST'];
+	return $_SESSION['POST_TOKEN'];
 }
 
-function estJetonCorrect() {
-	return getJeton() == $_POST['jeton'];
+function isTokenCorrect() {
+	return getToken() == @$_POST['token'];
 }
 
-function hashMotDePasse($salt, $mdp) {
-    return hash('sha256', $salt.$mdp.'ReN1E2Tv45Yct6Kf', true);
+function hashPasssword($salt, $password) {
+    return hash('sha256', $salt.$password.'ReN1E2Tv45Yct6Kf', true);
 }
 
-function genererSel() {
+function generateSalt() {
 	return openssl_random_pseudo_bytes(16);
 }
 
-function peutAccederMaraudes() {
-	return isset(getUser()->droits) && getUser()->droits >= 1;
+function canAccessRoamings() {
+	return isset(getUser()->rights) && getUser()->rights >= 1;
 }
 
-function peutVoirAutresMembres() {
-	return isset(getUser()->droits) && getUser()->droits >= 2;
+function canSeeOtherMembers() {
+	return isset(getUser()->rights) && getUser()->rights >= 2;
 }
 
-function peutPartiperAuxMaraudes() {
-	return isset(getUser()->droits) && getUser()->droits >= 3;
+function canApplyForRoamings() {
+	return isset(getUser()->rights) && getUser()->rights >= 3;
 }
 
-function peutVoirCRMaraude() {
-	return isset(getUser()->droits) && getUser()->droits >= 4;
+function canSeeReports() {
+	return isset(getUser()->rights) && getUser()->rights >= 4;
 }
 
-function peutEtreTuteur() {
-	return isset(getUser()->droits) && getUser()->droits >= 5;
+function canBeTutor() {
+	return isset(getUser()->rights) && getUser()->rights >= 5;
 }
 
-function peutValiderParticipation() {
-	return isset(getUser()->droits) && getUser()->droits >= 6;
+function canValidateApplication() {
+	return isset(getUser()->rights) && getUser()->rights >= 6;
 }
 
-function peutGererMembres() {
-	return isset(getUser()->droits) && getUser()->droits >= 7;
+function canManageMembers() {
+	return isset(getUser()->rights) && getUser()->rights >= 7;
 }
 
-function connecte($pdo, $pseudo, $mdp) {
-    $query = 'SELECT membreId, pseudo, email, groupe, m.groupeId, droits, mdpSalt, mdpHash'.
-             ' FROM ( membres m LEFT OUTER JOIN groupes g ON m.groupeId = g.groupeId )'.
+function connect($pdo, $pseudo, $password) {
+    $query = 'SELECT memberId, pseudo, email, groupName, m.groupId, rights, passwordSalt, passwordHash'.
+             ' FROM ( '.MEMBERS_TABLE.' m LEFT OUTER JOIN '.GROUPS_TABLE.' g ON m.groupId = g.groupId )'.
              ' WHERE pseudo = :pseudo';
     $requete = $pdo->prepare($query);
     $requete->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
     $requete->execute();
-    $membre = $requete->fetch(PDO::FETCH_OBJ);
-    if ( $membre && hashMotDePasse($membre->mdpSalt, $mdp) == $membre->mdpHash ) {
-        unset($membre->mdpSalt);
-        unset($membre->mdpHash);
-        $_SESSION['USER'] = $membre;
-        genererJeton();
+    $member = $requete->fetch(PDO::FETCH_OBJ);
+    if ( $member && hashPasssword($member->passwordSalt, $password) == $member->passwordHash ) {
+        unset($member->passwordSalt);
+        unset($member->passwordHash);
+        $_SESSION['USER'] = $member;
+        generateToken();
         return true;
     }
     return false;
 }
 
-function deconnecte() {
+function disconnect() {
     session_unset();
     session_destroy();
 }
 
-if ( @$_POST['action'] == 'connecte' && !empty($_POST['pseudo']) && !empty($_POST['motDePasse']) ) {
+if ( @$_POST['action'] == 'connect' && !empty($_POST['pseudo']) && !empty($_POST['password']) ) {
 	require_once('lib/sql.php');
-	if (strlen($_POST['motDePasse']) > MAX_PASSWORD_LENGTH) {
+	if (strlen($_POST['password']) > MAX_PASSWORD_LENGTH) {
 		// Réduit les possibilités d'exploitation de collision sur l'algorithme de hash
-		$connexionErreur = 'Mot de passe trop long';
-	} else if ( !connecte($pdo, $_POST['pseudo'], $_POST['motDePasse'] ) ) {
-		$connexionErreur = 'Identifiants incorrects';
+		$connectionError = 'Mot de passe trop long';
+	} else if ( !connect($pdo, $_POST['pseudo'], $_POST['password'] ) ) {
+		$connectionError = 'Identifiants incorrects';
 	}
-} else if ( @$_POST['action'] == 'deconnecte' && estJetonCorrect() ) {
-	deconnecte();
+} else if ( @$_POST['action'] == 'disconnect' && isTokenCorrect() ) {
+	disconnect();
 }
 
 ?>

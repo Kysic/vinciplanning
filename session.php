@@ -21,18 +21,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('lib/common.php');
-if ( estConnecte() ) {
+if ( isConnected()) {
 	echo json_encode(array(
-			'membreId' => getUser()->membreId,
+			'memberId' => getUser()->memberId,
 			'pseudo' => getUser()->pseudo,
-			'peutAccederMaraudes' => peutAccederMaraudes(),
-			'peutVoirAutresMembres' => peutVoirAutresMembres(),
-			'peutPartiperAuxMaraudes' => peutPartiperAuxMaraudes(),
-			'peutVoirCRMaraude' => peutVoirCRMaraude(),
-			'peutEtreTuteur' => peutEtreTuteur(),
-			'peutValiderParticipation' => peutValiderParticipation(),
-			'peutGererMembres' => peutGererMembres(),
-			'jeton' => getJeton()
+			'canAccessRoamings' => canAccessRoamings(),
+			'canSeeOtherMembers' => canSeeOtherMembers(),
+			'canApplyForRoamings' => canApplyForRoamings(),
+			'canSeeReports' => canSeeReports(),
+			'canBeTutor' => canBeTutor(),
+			'canValidateApplication' => canValidateApplication(),
+			'canManageMembers' => canManageMembers(),
+			'token' => getToken()
 	));
 } else {
 	echo "false";

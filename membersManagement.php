@@ -21,14 +21,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('lib/common.php');
-require_once('lib/membre.php');
+require_once('lib/member.php');
 
-if (!peutGererMembres()) {
+if (!canManageMembers()) {
 	die("Vous ne disposez pas des droits nécessaires.");
 }
 
-if ( @$_POST['action'] == 'modifierGroupe' && estJetonCorrect() && !empty($_POST['membreId']) && !empty($_POST['groupeId']) ) {
-	modifierGroupe($pdo, $_POST['membreId'], $_POST['groupeId']);
+if ( @$_POST['action'] == 'modifyGroup' && isTokenCorrect() && !empty($_POST['memberId']) && !empty($_POST['groupId']) ) {
+	modifyGroup($pdo, $_POST['memberId'], $_POST['groupId']);
 }
 ?>
 <table>
@@ -37,29 +37,29 @@ if ( @$_POST['action'] == 'modifierGroupe' && estJetonCorrect() && !empty($_POST
 </thead>
 <tbody>
 <?php
-$listeGroupes = listeGroupes($pdo);
-$listeMembres = listeMembres($pdo);
-foreach ( $listeMembres as $membre ) {
-	echo '<tr><td>'.$membre['pseudo'].'</td><td>'.$membre['nom'].'</td><td>'.
-		$membre['prenom'].'</td><td>'.$membre['email'].'</td><td>'.
-		$membre['telephone'].'</td><td>';
-	echo '<select name="groupeId" onChange="modal.postData(\'gestionMembres.php\', ';
-	echo '\'action=modifierGroupe&jeton='.getJeton().'&membreId='.$membre['membreId'].'&groupeId=\'+$(this).val())"';
-	if ($membre['membreId'] == getUser()->membreId) {
+$groups = getGroups($pdo);
+$members = getMembers($pdo);
+foreach ( $members as $member ) {
+	echo '<tr><td>'.$member['pseudo'].'</td><td>'.$member['name'].'</td><td>'.
+		$member['firstName'].'</td><td>'.$member['email'].'</td><td>'.
+		$member['telephone'].'</td><td>';
+	echo '<select name="groupId" onChange="modal.postData(\'membersManagement.php\', ';
+	echo '\'action=modifyGroup&token='.getToken().'&memberId='.$member['memberId'].'&groupId=\'+$(this).val())"';
+	if ($member['memberId'] == getUser()->memberId) {
 		echo ' disabled="disabled"';
 	}
 	echo '>';
-	echo '<option disabled="disabled"';
-	if ($membre['groupeId'] == NULL) {
-		echo ' selected="selected"';
-	}
-	echo '>Sans groupe</option>';
-	foreach ( $listeGroupes as $groupe ) {
-		echo '<option value="'.$groupe['groupeId'].'"';
-		if ($membre['groupeId'] == $groupe['groupeId']) {
+// 	echo '<option disabled="disabled"';
+// 	if ($member['groupId'] == NULL) {
+// 		echo ' selected="selected"';
+// 	}
+// 	echo '>Sans groupe</option>';
+	foreach ( $groups as $group ) {
+		echo '<option value="'.$group['groupId'].'"';
+		if ($member['groupId'] == $group['groupId']) {
 			echo ' selected="selected"';
 		}
-		echo '>'.$groupe['groupe'].'</option>';
+		echo '>'.$group['groupName'].'</option>';
 	}
 	echo '</select>';
 	echo '</td></tr>';
