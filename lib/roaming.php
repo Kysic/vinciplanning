@@ -37,7 +37,7 @@ function getRoamingParticipants($pdo, &$roamings, $onlyValide=TRUE) {
              ' FROM ( '.APPLICATIONS_TABLE.' NATURAL JOIN '.MEMBERS_TABLE.' )'.
              ' WHERE roamingId = :roamingId';
     if ($onlyValide) {
-    	$query .= ' AND ( applicationStatus = "validate" OR memberId = :memberId )';
+    	$query .= ' AND ( applicationStatus = "validated" OR memberId = :memberId )';
     }
     $requete = $pdo->prepare($query);
     if ($onlyValide) {

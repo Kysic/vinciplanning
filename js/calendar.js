@@ -139,6 +139,27 @@ var modal = (function() {
 
 //Gere le menu de navigation
 var browsingMenu = (function() {
+	
+	function showAuthorizedNivagationLinks() {
+//		if (user) {
+//			$('#profileManagement').show();	
+//		} else {
+//			$('#profileManagement').hide();	
+//		}
+		if (user && user.canManageMembers) {
+			$('#membersManagement').show();
+		} else {
+			$('#membersManagement').hide();	
+		}
+	}
+	
+	$(document).on('sessionStateChange', function(event, user) {
+		showAuthorizedNivagationLinks();
+	});
+	
+	$('#contenuNavigation').ready(function() {
+		showAuthorizedNivagationLinks();
+	});
 
 	function legend() {
 		modal.show('<h3>Légende</h3>'+
@@ -294,7 +315,7 @@ var calendar = (function() {
 	
 	function roamingMenu(roamingDate) {
 		var roaming = getRoaming(roamingDate);
-		var html = '<h3>Roaming du ' + config.dayNames[(roamingDate.getDay() + 6) % 7].toLowerCase()
+		var html = '<h3>Maraude du ' + config.dayNames[(roamingDate.getDay() + 6) % 7].toLowerCase()
 					+ ' ' + roamingDate.getDate() + ' ' + config.monthNames[monthDisplayed.getMonth()].toLowerCase() 
 					+ ' ' + roamingDate.getFullYear() + '</h3>';
 		var myParticipationId = -1;
@@ -352,7 +373,7 @@ var calendar = (function() {
 		
 		if (roamingDate.getTime() < getTodayMidnight().getTime()) {
 			if (roaming && (user.canValidateApplication || (memberApplicationValidated && user.canSeeReports) )) {
-				html += '<br><input type="button" value="Ajouter CR Roaming" onClick="alert(\'Not implemented yet.\');">';
+				html += '<br><input type="button" value="Ajouter CR Maraude" onClick="alert(\'Not implemented yet.\');">';
 			}
 		} else if(user.canApplyForRoamings) {
 			if (myParticipationId > 0) {

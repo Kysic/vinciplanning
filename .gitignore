@@ -4,4 +4,5 @@
 copy.sh
 conf/config.php
 conf/config_prod.php
+tools
 

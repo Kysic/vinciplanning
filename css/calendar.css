@@ -120,6 +120,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	width: 130px;
 	display: inline-block;
 	vertical-align: top;
+	overflow-y: auto;
 }
 
 .dayNumber {
@@ -159,11 +160,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 .today.roamingComplete {
-	background: #faf;
+	background: #ffd;
+	background: linear-gradient(to top, #ebe2c2, #ffffe2);
 }
 
 .today.roamingNotComplete {
-	background: #faa;
+	background: #fbc;
+	background: linear-gradient(to top, #e99, #fcc);
 }
 
 .afterToday {
@@ -320,4 +323,8 @@ input[type=text],input[type=password] {
 	padding: 5px;
 	background: #eee;
 	background: linear-gradient(to top, #e0e0ff, #efefff);
+}
+
+.hidden {
+	display: none;
 }

@@ -43,7 +43,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			<div id="browsingMenu" class="menu">
 				<div class="titleBar">Navigation</div>
 				<div id="contenuNavigation" class="menuContent">
-					<span class="actionLink" onClick="browsingMenu.help();">Aide</span>
+					<div id="profileManagement" class="actionLink hidden" onClick="modal.open('profileManagement.php');">Gestion profil</div>
+					<div id="membersManagement" class="actionLink hidden" onClick="modal.open('membersManagement.php');">Gestion Membres</div>
+					<div id="groupsManagement" class="actionLink hidden" onClick="modal.open('groupsManagement.php');">Gestion Groupes</div>
+					<div class="actionLink" onClick="browsingMenu.help();">Aide</div>
 				</div>
 			</div>
 			<div id="dashboard" class="menu">

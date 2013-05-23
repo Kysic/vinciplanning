@@ -27,17 +27,6 @@ require_once('lib/common.php');
 if ( isConnected() ) {
 	echo '<em>'.getUser()->pseudo.' ('.getUser()->groupName.')</em><br>';
 	?>
-	<span class="actionLink" onClick="modal.open('profileManagement.php');">Gestion profil</span><br>
-	<?php 
-	if (canManageMembers()) {
-?>
-<!-- 
-	<span class="actionLink" onClick="modal.open('groupsManagement.php');">Gestion Groupes</span><br>
--->
-	<span class="actionLink" onClick="modal.open('membersManagement.php');">Gestion Membres</span><br>
-<?php
-	}
-	?>
 	<input type="hidden" name="action" value="disconnect">
 	<input type="hidden" name="token" value="<?php echo getToken(); ?>">
 	<input type="submit" value="deconnexion">
