@@ -85,7 +85,7 @@ function canManageMembers() {
 }
 
 function connect($pdo, $pseudo, $password) {
-    $query = 'SELECT memberId, pseudo, email, groupName, m.groupId, rights, passwordSalt, passwordHash'.
+    $query = 'SELECT memberId, pseudo, name, firstName, email, telephone, groupName, m.groupId, rights, passwordSalt, passwordHash'.
              ' FROM ( '.MEMBERS_TABLE.' m LEFT OUTER JOIN '.GROUPS_TABLE.' g ON m.groupId = g.groupId )'.
              ' WHERE pseudo = :pseudo';
     $requete = $pdo->prepare($query);

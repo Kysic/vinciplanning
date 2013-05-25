@@ -20,6 +20,42 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+function printErrorMsg($formName) {
+	global $formParams;
+	$formEntry = $formParams[$formName];
+	switch ($formEntry->isValid(@$_POST[$formName])) {
+		case FormEntry::FIELD_REQUIRED_NOT_SET:
+			return 'Ce champ est requis.';
+		case FormEntry::FIELD_CONTENT_SIZE_UNDER_LIMIT:
+			return 'Trop court, il faut au moins '.$formEntry->getMinSize().' caractères.';
+		case FormEntry::FIELD_CONTENT_SIZE_OVER_LIMIT:
+			return 'Trop long, il ne peut y avoir plus de '.$formEntry->getMaxSize().' caractères.';
+		case FormEntry::FIELD_CONTENT_FORMAT_INVALID:
+			return $formEntry->getExpectedFormat();
+		default:
+			return '';
+	}
+}
+
+function isAllValid($formParamsList) {
+	foreach ($formParamsList as $param => $formEntry) {
+		if (!$formEntry->isValid(@$_POST[$param]) == FormEntry::FIELD_CONTENT_VALID) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function isOneFill($formParamsList) {
+	foreach ($formParamsList as $param => $formEntry) {
+		if (isset($_POST[$param])) {
+			return true;
+		}
+	}
+	return false;
+}
+
 abstract class FormEntry
 {
 	const FIELD_CONTENT_VALID = 0;

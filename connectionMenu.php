@@ -42,7 +42,7 @@ if ( isConnected() ) {
 	<label for="passwordInput">Mot-de-passe : </label>
 	<input type="password" name="password" id="password"><br>
 	<input type="submit" value="connexion"><br>
-	<span class="actionLink" onClick="modal.open('inscription.php');">S'inscrire</span><br>
+	<span class="actionLink" onClick="modal.open('registration.php');">S'inscrire</span><br>
 	<?php
 }
 ?>

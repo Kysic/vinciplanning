@@ -83,5 +83,19 @@ function addMember($pdo, $pseudo, $name, $firstName, $email, $telephone, $passwo
 	return $requete->errorCode();
 }
 
+function modifyProfil($pdo, $memberId, $name, $firstName, $email, $telephone) {
+	$query = 'UPDATE '.MEMBERS_TABLE.
+	' SET name=:name, firstName=:firstName, email=:email, telephone=:telephone'.
+	' WHERE memberId=:memberId';
+	$requete = $pdo->prepare($query);
+	$requete->bindValue(':memberId', $memberId, PDO::PARAM_INT);
+	$requete->bindValue(':name', $name, PDO::PARAM_STR);
+	$requete->bindValue(':firstName', $firstName, PDO::PARAM_STR);
+	$requete->bindValue(':email', $email, PDO::PARAM_STR);
+	$requete->bindValue(':telephone', $telephone, PDO::PARAM_STR);
+	$requete->execute();
+	return $requete->errorCode();
+}
+
 ?>
 

@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   `pseudo` varchar(50) CHARACTER SET utf8 COLLATE utf8_roman_ci NOT NULL,
   `passwordSalt` binary(16) NOT NULL,
   `passwordHash` binary(32) NOT NULL,
-  `inscriptionDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `registrationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_roman_ci NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_roman_ci NOT NULL,
   `firstName` varchar(50) CHARACTER SET utf8 COLLATE utf8_roman_ci NOT NULL,
@@ -176,15 +176,15 @@ CREATE TABLE IF NOT EXISTS `members` (
 -- Contenu de la table `members`
 --
 
-INSERT INTO `members` (`memberId`, `pseudo`, `passwordSalt`, `passwordHash`, `inscriptionDate`, `email`, `name`, `firstName`, `telephone`, `groupId`) VALUES
-(27, 'admin', 'Ä21TI-½¾s|*ÛbLC\n', '0òª"Ëp~äõ|5ÐÞ÷j¦£ÚP³)66', '2013-05-09 08:23:23', 'admin@noHost.org', 'NomAdmin', 'PrenomAdmin', '0000000000', 6),
-(28, 'coequipier', 'ÈPúÙvÚâ²3ÓÜ«', '¡¤ñÔ>£zìå©ßñà «8ëÖ¢_&y Ëvò^Yð4', '2013-05-09 08:26:40', 'Prenom1.Nom1@nohost.fr', 'Nom', 'PrÃÂ©nom', '', 3),
-(29, 'tuteur', '³?ò|öÕÛÜ', 'ãEäÀâÒö£¾§ÒÍî}©%½sõÇ_1®ý®ðD&', '2013-05-09 08:31:07', 'NomTuteur@nohost.org', 'NomTuteur', 'PrÃÂ©nomTuteur', '', 4),
-(30, 'validateur', '¡Û©òøÛ¸òñy·ç2!', 'M\0mqñï)\rD5êîY<¤\no¹óS¾h³', '2013-05-09 08:31:41', 'validateur@nohost.org', 'NomValidateur', 'PrenomValidateur', '', 5),
-(31, 'Jean', '_Ê5û°$r÷\0O&à½', '\rJÛ¤íú­ÑÊ.k$LA	$UÀÊ¦<Ìö|', '2013-05-09 08:32:44', 'Jean.Hubert@nohost.org', 'Hubert', 'Jean', '', 2),
-(32, 'julie', '</LÞí.I£ªÔ¨þ ­­', 'âá\røÑ¥¬I Ñ)¦ª&Ôe#Û&où', '2013-05-09 08:34:21', 'julie.durand@nohost.org', 'Durand', 'Julie', '', 5),
-(33, 'Paul', 'AÃFv»§bÄÛ§Ê', '»laÃ]Z9\n½ÞÄª7EUéF9#ú\ntÀß¶', '2013-05-09 08:34:59', 'paul.thomas@nohost.org', 'Thomas', 'Paul', '', 4),
-(34, 'Claire', 'Ó×c:ÀìÂBÈPZñ·', '@Éë±¹0:£"æý³é¥g¨ëXz±\ZiuÿR', '2013-05-09 08:35:48', 'claire.leroy@nohost.org', 'Leroy', 'Claire', '', 3);
+INSERT INTO `members` (`memberId`, `pseudo`, `passwordSalt`, `passwordHash`, `registrationDate`, `email`, `name`, `firstName`, `telephone`, `groupId`) VALUES
+(27, 'admin', UNHEX('c4323154492dbdbe737c2adb624c430a'), UNHEX('30f2aa1e22cb700b7e0517e4f57c0e35d015def7166aa6a3da0650b387293636'), '2013-05-09 08:23:23', 'admin@noHost.org', 'NomAdmin', 'PrenomAdmin', '0000000000', 6),
+(28, 'coequipier', UNHEX('c8508bfa80d97617dae2b233d3dc8cab'), UNHEX('a1a4f1d43ea37f7aec19e5a9dff1e0a0ab38ebd6a25f2679a0cb76f25e59f034'), '2013-05-09 08:26:40', 'Prenom1.Nom1@nohost.fr', 'Nom', 'Prénom', '', 3),
+(29, 'tuteur',  UNHEX('b311053ff21b7cf6d5858d118610dbdc'), UNHEX('e345e4c0e2d2f6a3bea7d2cdee7d17a925bd73f5c75f8531ae81fdaef09f4426'), '2013-05-09 08:31:07', 'NomTuteur@nohost.org', 'NomTuteur', 'PrénomTuteur', '', 4),
+(30, 'validateur', UNHEX('5bd482bccc21f788bcb3c2815c27ef83'), UNHEX('3ef8de31993138db6d479d95663faab35eda00b145e47654f7c9fd75b86a8575'), '2013-05-09 08:31:41', 'validateur@nohost.org', 'NomValidateur', 'PrenomValidateur', '', 5),
+(31, 'Jean', UNHEX('5fca35fbb0241872f782004f26e0bd89'), UNHEX('0d4a0f8cdba4edfaadd1ca2e6b244c4181092455c00bcaa63ccc841816f67c89'), '2013-05-09 08:32:44', 'Jean.Hubert@nohost.org', 'Hubert', 'Jean', '', 2),
+(32, 'julie', UNHEX('3c2f4cdeed0c2e49a3aad4a8fe20adad'), UNHEX('e2e1850d071cf8d1a5ac80491f208198d129a6aa9026d46523db2688866ff913'), '2013-05-09 08:34:21', 'julie.durand@nohost.org', 'Durand', 'Julie', '', 5),
+(33, 'Paul', UNHEX('1f41c34676bba762c49c9ddb12a7ca86'), UNHEX('bb046c61c35d5a03390a8fbddec487aa374555e99b469a39239efa0a74c0dfb6'), '2013-05-09 08:34:59', 'paul.thomas@nohost.org', 'Thomas', 'Paul', '', 4),
+(34, 'Claire', UNHEX('d3d7633ac08aecc242c850875af1b711'), UNHEX('40c98bebb105b98797303a95a322e6fdb3e9a567a8eb58107ab11a6975ff9552'), '2013-05-09 08:35:48', 'claire.leroy@nohost.org', 'Leroy', 'Claire', '', 3);
 
 --
 -- Contraintes pour les tables exportées

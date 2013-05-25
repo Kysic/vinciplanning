@@ -141,11 +141,11 @@ var modal = (function() {
 var browsingMenu = (function() {
 	
 	function showAuthorizedNivagationLinks() {
-//		if (user) {
-//			$('#profileManagement').show();	
-//		} else {
-//			$('#profileManagement').hide();	
-//		}
+		if (user) {
+			$('#profileManagement').show();	
+		} else {
+			$('#profileManagement').hide();	
+		}
 		if (user && user.canManageMembers) {
 			$('#membersManagement').show();
 		} else {

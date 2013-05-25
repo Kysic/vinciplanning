@@ -29,11 +29,11 @@ if (isConnected()) {
 }
 
 $formParams = array(
-		'pseudo' => new GenericFormEntry('Login', 'text', '2 à 30 caractères autorisés : "-", "_" et alphanumériques',
-				true, 2, 30, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-_[:alnum:]]{2,30}$/'))),
-		'name' => new GenericFormEntry('Nom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
+		'pseudo' => new GenericFormEntry('Login', 'text', '2 à 30 caractères autorisés : ".", -", "_", alphanumériques et lettres accentuées',
+				true, 2, 30, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-_\.[:alnum:]âêîôûàèìòùáéíóúäëïöüãõñç]{2,30}$/'))),
+		'name' => new GenericFormEntry('Nom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettres accentuées',
 				true, 2, 50, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-[:alpha:]âêîôûàèìòùáéíóúäëïöüãõñç]{2,50}$/'))),
-		'firstName' => new GenericFormEntry('Prenom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettes accentuées',
+		'firstName' => new GenericFormEntry('Prenom', 'text', '2 à 50 caractères autorisés : "-", alphabétiques et lettres accentuées',
 				true, 2, 50, FILTER_VALIDATE_REGEXP, array("options"=>array('regexp'=>'/^[-[:alpha:]âêîôûàèìòùáéíóúäëïöüãõñç]{2,50}$/'))),
 		'email' => new GenericFormEntry('Email', 'email', 'Format invalide', true, 0, 50, FILTER_VALIDATE_EMAIL),
 		'telephone' => new GenericFormEntry('Téléphone', 'tel', 'Format invalide', false, -1, 20,
@@ -44,36 +44,8 @@ $formParams = array(
 );
 
 
-function printErrorMsg($formName) {
-	global $formParams;
-	$formEntry = $formParams[$formName];
-	switch ($formEntry->isValid(@$_POST[$formName])) {
-		case FormEntry::FIELD_REQUIRED_NOT_SET:
-			return 'Ce champ est requis.';
-		case FormEntry::FIELD_CONTENT_SIZE_UNDER_LIMIT:
-			return 'Trop court, il faut au moins '.$formEntry->getMinSize().' caractères.';
-		case FormEntry::FIELD_CONTENT_SIZE_OVER_LIMIT:
-			return 'Trop long, il ne peut y avoir plus de '.$formEntry->getMaxSize().' caractères.';
-		case FormEntry::FIELD_CONTENT_FORMAT_INVALID:
-			return $formEntry->getExpectedFormat();
-		default:
-			return '';
-	}
-}
-
-
-$isAllValid = true;
-$isNoneSet = true;
 $sqlInvalidInput = array();
-foreach ($formParams as $param => $formEntry) {
-	if (isset($_POST[$param])) {
-		$isNoneSet = false;
-	}
-	if (!$formEntry->isValid(@$_POST[$param]) == FormEntry::FIELD_CONTENT_VALID) {
-		$isAllValid = false;
-	}
-}
-if ($isAllValid) {
+if (isAllValid($formParams)) {
 	require_once('lib/member.php');
 	$result = addMember($pdo, $_POST['pseudo'], $_POST['name'], $_POST['firstName'], $_POST['email'], $_POST['telephone'], $_POST['password']);
 	if ($result == '00000') {
@@ -92,7 +64,7 @@ qu'une fois que votre inscription aura été validée.
 }
 ?>
 
-<form method="POST" action="inscription.php" id="inscriptionForm" onSubmit="return modal.submitForm($(this));">
+<form method="POST" action="registration.php" id="registrationForm" onSubmit="return modal.submitForm($(this));">
 <?php
 if (isset($error)) {
 	echo $error;
@@ -100,7 +72,7 @@ if (isset($error)) {
 foreach ($formParams as $formName => $formEntry) {
 	echo '<label for="'.$formName.'">'.$formEntry->getLabel().' : </label>';
 	echo '<input type="'.$formEntry->getInputType().'" name="'.$formName.'" id="'.$formName.'" maxlength="'.$formEntry->getMaxSize().'" value="'.@$_POST[$formName].'">';
-	if (!$isNoneSet) {
+	if (isOneFill($formParams)) {
 		echo ' '.printErrorMsg($formName);
 		if (isset($sqlInvalidInput[$formName])) {
 			echo ' '.$sqlInvalidInput[$formName];
