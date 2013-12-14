@@ -163,7 +163,7 @@ var browsingMenu = (function() {
 
 	function legend() {
 		modal.show('<h3>Légende</h3>'+
-				'<h4>Maraude complete :</h4>'+
+				'<h4>Maraude complète :</h4>'+
 				'<div class="day afterToday roamingComplete"><div class="dayNumber">XX</div>'+
 				'<div class="tutor">Tuteur</div>'+
 				'<div class="teamMate">Coéquipier 1</div>'+
@@ -387,7 +387,7 @@ var calendar = (function() {
 					getDayId(roamingDate)+'\');">';
 				}
 		}
-		if (user.canValidateApplication) {
+		if (roamingDate.getTime() >= getTodayMidnight().getTime() && user.canValidateApplication) {
 			html += '<br><input value="Ajouter participation au nom d\'un autre" type="button" onClick="alert(\'Not implemented yet.\');">';
 		}
 		modal.show(html);
